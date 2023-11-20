@@ -1,4 +1,5 @@
 const router = require('express').Router();  
+const router = require('express').Router();  
 const {CreateBlog,likeBlog,
     updateBlog,getBlogs,getBlog,deleteBlog,pushComment,getComments,disLikeBlog, toggleLikeBlog
     } = require('../Controllers/BlogController.js');

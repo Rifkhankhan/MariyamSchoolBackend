@@ -15,55 +15,55 @@ app.use(express.static('public'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
-// app.use('/uploads', express.static(path.join('Server/uploads')));
+
 
 //need to uncommand to deploy
-app.use(cors({
-	origin:"https://myblogs-dk3t.onrender.com"
-}))
+// app.use(cors({
+// 	origin:"https://myblogs-dk3t.onrender.com"
+// }))
 
 app.use(express.static(__dirname+'/'));
 
-const blogRouter = require('./Routes/BlogRouter');
-// const authRouter = require('./Routes/userrouter');
-// const productRouter = require('./Routes/ProductRouter');
-// const movieRouter = require('./Routes/MovieRouter');
-// const netflixRouter = require('./Routes/NetflixAuthRoute');
+const classRouter = require('./Routes/ClassRouter');
+const StudentRouter = require('./Routes/StudentRouter');
+const ExamRouter = require('./Routes/ExamRouter');
+const GradeRouter = require('./Routes/GradeRouter');
+
 
 //need to uncommand to deploy
 // deploy
-const wsServer = new ws.Server({
-	server:app.listen(3000),
-	host:"localhost",
-	path:"/"
-})
+// const wsServer = new ws.Server({
+// 	server:app.listen(3000),
+// 	host:"localhost",
+// 	path:"/"
+// })
 
-wsServer.on("connection",(w) => {
-	console.log("someone connected");
-	w.on("message",(msg) => {
-		console.log("got message",msg);
-		w.send(msg)
-	})
-})
+// wsServer.on("connection",(w) => {
+// 	console.log("someone connected");
+// 	w.on("message",(msg) => {
+// 		console.log("got message",msg);
+// 		w.send(msg)
+// 	})
+// })
 
 // deploy
-app.use((err,req,res,next) => {
-	if(req.file) {
-		fs.unlink(req.file.path, err => {
-			console.log(err);
-		})
-	}
-})
+// app.use((err,req,res,next) => {
+// 	if(req.file) {
+// 		fs.unlink(req.file.path, err => {
+// 			console.log(err);
+// 		})
+// 	}
+// })
 
 app.use(express.static(path.join(__dirname + '/Public')));
 
 //connect mongodb
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000  
 
 mongoose
 	.connect(
 		
-		'mongodb+srv://Rifkhan:blogs123@cluster0.zwc35pi.mongodb.net/?retryWrites=true&w=majority'
+		'mongodb+srv://Rifkhan:mariyamschool@cluster0.npeeomq.mongodb.net/?retryWrites=true&w=majority'
 	)
 	.then(() => {
 		console.log('connected to Database');
@@ -95,11 +95,11 @@ app.use((req, res, next) => {
 
 // here route should be mentioned
   
-app.use('/', blogRouter);
-// app.use('/user', authRouter);
-// app.use('/product', productRouter);
-// app.use('/netflix', movieRouter);
-// app.use('/netflixAuth', netflixRouter);
+app.use('/class', classRouter);
+app.use('/student', StudentRouter);
+app.use('/exam', ExamRouter);
+app.use('/grade', GradeRouter);
+
 
 // for unsupported router error handler
 app.use((error,req, res, next) => {
